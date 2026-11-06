@@ -1,0 +1,15 @@
+{
+  "name": "BOMBARDA",
+  "short_name": "BOMBARDA",
+  "description": "Retro artillery in your browser: aim, charge, fire and smash towers on a glowing CRT. 90 levels, bosses, upgrades. No install.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#020a02",
+  "theme_color": "#020a02",
+  "icons": [
+    { "src": "/assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
