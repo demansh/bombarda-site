@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#020a02">
+  <script>
+    (() => {
+      const ZONE_PALETTES = [
+        { phosphor: [51, 255, 102], background: [2, 10, 2] },
+        { phosphor: [255, 176, 0], background: [10, 6, 0] },
+        { phosphor: [225, 235, 255], background: [6, 7, 10] },
+        { phosphor: [255, 232, 64], background: [10, 9, 0] },
+        { phosphor: [255, 70, 40], background: [10, 2, 0] },
+        { phosphor: [70, 140, 255], background: [2, 4, 10] },
+      ];
+      const LEVELS_PER_ZONE = 15;
+      const LEVELS_PER_CYCLE = 90;
+      const RUN_KEY = "bombarda:run:v3";
+      const readSavedZone = () => {
+        try {
+          const level = JSON.parse(window.localStorage.getItem(RUN_KEY))?.globalLevel;
+          return Number.isInteger(level) && level >= 1 ? Math.floor(((level - 1) % LEVELS_PER_CYCLE) / LEVELS_PER_ZONE) + 1 : 0;
+        } catch (error) {
+          console.warn(`Unable to read ${RUN_KEY}`, error);
+          return 0;
+        }
+      };
+      const palette = ZONE_PALETTES[readSavedZone() - 1] ?? ZONE_PALETTES[0];
+      const toHex = (rgb) => `#${rgb.map((channel) => channel.toString(16).padStart(2, "0")).join("")}`;
+      document.documentElement.style.setProperty("--phosphor-rgb", palette.phosphor.join(", "));
+      document.querySelector('meta[name="theme-color"]').content = toHex(palette.background);
+    })();
+  </script>
+  <meta name="description" content="Retro artillery in your browser: aim, charge, fire and smash towers on a glowing CRT. 90 levels, bosses, upgrades. No install.">
+  <meta name="author" content="demansh">
+  <meta name="copyright" content="(c) 2026 demansh. All rights reserved.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BOMBARDA">
+  <meta property="og:title" content="BOMBARDA">
+  <meta property="og:description" content="Retro artillery in your browser: aim, charge, fire and smash towers on a glowing CRT. 90 levels, bosses, upgrades. No install.">
+  <meta property="og:url" content="https://bombarda.lol/">
+  <meta property="og:image" content="https://bombarda.lol/assets/social/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="BOMBARDA: a pixel cannon fires at a tower on a green phosphor CRT screen">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>BOMBARDA</title>
+  <link rel="preload" href="/assets/fonts/vt323.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/png" href="/assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+  <script data-goatcounter="https://demansh.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</head>
+<body class="">
+  <main class="game-stage">
+  <canvas id="screen" class="game-screen" aria-label="BOMBARDA"></canvas>
+</main>
+<p class="orientation-hint glow" aria-hidden="true">ROTATE FOR FULL SCREEN</p>
+<noscript><p class="system-message glow">JAVASCRIPT REQUIRED</p></noscript>
+
+<script type="module" src="/assets/js/app.min.js"></script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("/sw.js")
+          .catch((error) => console.error("Service worker registration failed", error));
+      });
+    }
+  </script>
+</body>
+</html>
